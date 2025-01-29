@@ -35,25 +35,35 @@ public class NewMonoBehaviourScript : MonoBehaviour
         Vector3 inputXZPlane = new Vector3(inputVector.x, 0, inputVector.y);
 
         // Apply continuous force for movement
-        sphereRigidBody.AddForce(inputXZPlane, ForceMode.Force);
+        sphereRigidBody.AddForce(inputXZPlane);
 
         // Apply jump impulse only if colliding with the plane and Spacebar is pressed
         if (Input.GetKeyDown(KeyCode.Space) && isCollidingWithPlane)
         {
-            sphereRigidBody.AddForce(Vector3.up * 3f, ForceMode.Impulse); // Jump instantly
+            sphereRigidBody.AddForce(Vector3.up * 5f, ForceMode.Impulse); // Jump instantly
         }
 
         Debug.Log("Resultant Vector: " + inputVector);
         Debug.Log("Resultant 3D Vector: " + inputXZPlane);
     }
 
-
-    void OnCollisionEnter(Collision collision) // Helper method to check for collisions
+    // Bugs: Colliding with wall causes upward motion, which when stacked with the jump causes ball to exit confined area
+    // Fixable, but outside the scope of this assignment
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "Plane")
         {
             isCollidingWithPlane = true;
             Debug.Log("Sphere started colliding with the Plane.");
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.name == "Plane")
+        {
+            isCollidingWithPlane = false;
+            Debug.Log("Sphere stopped colliding with the Plane.");
         }
     }
 }
