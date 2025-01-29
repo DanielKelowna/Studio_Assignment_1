@@ -1,12 +1,15 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
+    public Rigidbody sphereRigidBody;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Debug.Log("Calling the Start method");
-    }
+       
+}
 
     // Update is called once per frame
     void Update()
@@ -29,6 +32,14 @@ public class NewMonoBehaviourScript : MonoBehaviour
         {
             inputVector += Vector2.right;
         }
+        if (inputVector.magnitude > 1)
+        {
+            inputVector = inputVector.normalized;
+        }
+        Vector3 inputXZPlane = new Vector3(inputVector.x, 0, inputVector.y);
+        sphereRigidBody.AddForce(inputXZPlane);
         Debug.Log("Resultant Vector: " + inputVector);
+        Debug.Log("Resultant 3D Vector: " + inputXZPlane);
+
     }
 }
